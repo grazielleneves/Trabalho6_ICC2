@@ -1,32 +1,40 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+int shell(int v[], int n) ;
+void quick(int v[], int f, int l) ;
 
-void main(){
-    int n, i = 0, j, rep, p = 0, f = 1;
-    scanf("%d", &n);
-    int v[n];
-    int vm[n-1][i];
-    for(i = 0; i < n; i++){
-        scanf("%d", &v[i]);
+int main(){
+    int tamanho;
+    scanf("%d", &tamanho);
+    int vetorPrin[tamanho];
+
+    for(int i = 0; i < tamanho; i++){
+        scanf("%d", &vetorPrin[i]);
     }
-    for(i = 0; i < n; i++){
-        for(j = 0; j <= i; j++){
-            vm[i][j]=v[j];
-            //vm[0][0] = v[0]
-            //vm[1][0] = v[0]
-            //vm[1][1] = v[1]
-            //continua...
-        }
-    }
-    for(i = 0; i < n; i++){
-        for(j = 0; j <= i; j++){
-            printf("%d ", vm[i][j]);
+
+    int vetorAux[tamanho];
+    int cont=1;
+    int retornoShell=0;
+    while(cont <= tamanho){
+        //printf("cont eh: %d\n",cont);
+        printf("Aux: ");
+        for(int i=0;i<cont;i++){
+            vetorAux[i] = vetorPrin[i];
+            printf("%d ",vetorAux[i]);
         }
         printf("\n");
+        // 1
+        retornoShell = shell(vetorAux,cont);
+        printf("Shell eh: %d\n",retornoShell);
+        cont++;
     }
+    return 0;
 }
 
-void shell(int v[], int n) {
-    int gap = 1;
+int shell(int v[], int n) {
+    int comp=0,cpy=0;
+    int gap = pow(2,n-1);
     while(gap <= n) {
         gap *= 2;
 
@@ -35,15 +43,27 @@ void shell(int v[], int n) {
     while(gap > 0) {
         for (int i = gap; i < n; i+=gap){
             int x = v[i];
+            cpy=cpy+1;
             int j = i - gap;
-                while(j >= 0 && v[j] > x) {
-                    v[j + gap] = v[j];
-                    j -= gap;
-                }
-                v[j + gap] = x;
+            while(j >= 0 && v[j]>x){
+                comp=comp+1;
+                v[j + gap] = v[j];
+                cpy=cpy+1;
+                j -= gap;
             }
+            if(j>=0 && v[j]<=x){
+                comp=comp+1;
+            }
+            v[j + gap] = x;
+            cpy=cpy+1;
+        }
         gap /= 2;
     }
+    for(int aj=0;aj<n;aj++){
+        printf("%d ",v[aj]);
+    }
+    printf("\n");
+    return (comp+cpy);
 }
 
 void quick(int v[], int f, int l) {
