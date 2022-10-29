@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 int shell(int v[], int n) ;
 int quick(int v[], int f, int l) ;
+
+int compsQ=0,cpysQ=0;
 
 int main(){
     int tamanho;
@@ -15,20 +18,24 @@ int main(){
 
     int vetorAux[tamanho];
     int cont=1;
-    int retornoShell=0,retornoquick=0;
     while(cont <= tamanho){
-        //printf("cont eh: %d\n",cont);
-        printf("Aux: ");
+        int retornoShell=0,retornoquick=0;
+        compsQ=0,cpysQ=0;
+
         for(int i=0;i<cont;i++){
             vetorAux[i] = vetorPrin[i];
-            printf("%d ",vetorAux[i]);
         }
-        printf("\n");
-        // 1
         retornoShell = shell(vetorAux,cont);
-        retornoquick = quick(vetorAux,0,cont);
-        printf("Shell eh: %d e quick: %d\n",retornoShell,retornoquick);
+        retornoquick = quick(vetorAux,0,cont-1);
+        printf("Shell eh: %d e quick: comp: %d cp: %d e ret: %d\n",retornoShell,compsQ,cpysQ,retornoquick);
         cont++;
+
+        if (retornoShell > retornoquick)
+            printf("Q\n"); 
+        if (retornoShell < retornoquick)
+            printf("S\n"); 
+        if (retornoShell == retornoquick)
+            printf("-\n"); 
     }
     return 0;
 }
@@ -36,15 +43,19 @@ int main(){
 int shell(int v[], int n) {
     int comp=0,cpy=0;
     int gap = pow(2,n-1);
+
     while(gap <= n) {
         gap *= 2;
 
     }
+
     gap = gap / 2 - 1;
     while(gap > 0) {
         for (int i = gap; i < n; i+=gap){
+
             int x = v[i];
             cpy=cpy+1;
+
             int j = i - gap;
             while(j >= 0 && v[j]>x){
                 comp=comp+1;
@@ -55,8 +66,10 @@ int shell(int v[], int n) {
             if(j>=0 && v[j]<=x){
                 comp=comp+1;
             }
+
             v[j + gap] = x;
             cpy=cpy+1;
+
         }
         gap /= 2;
     }
@@ -68,15 +81,17 @@ int shell(int v[], int n) {
     return (comp+cpy);
 }
 
-int compsQ=0,cpysQ=0;
+
 
 int quick(int v[], int f, int l) {
     if (f >= l) {
-        return compsQ+cpysQ;
+        return (compsQ+cpysQ);
     }
     int m = (l + f)/2;
+
     int pivot = v[m];
     cpysQ=cpysQ+1;
+
     int i = f;
     int j = l;
     while(1) {
@@ -95,14 +110,16 @@ int quick(int v[], int f, int l) {
         if (i >= j) {
             break;
         }
+
         cpysQ=cpysQ+1;
         int aux = v[i];
-        cpysQ=cpysQ+1;
 
+        cpysQ=cpysQ+1;
         v[i] = v[j];
-        cpysQ=cpysQ+1;
 
+        cpysQ=cpysQ+1;
         v[j] = aux;
+
         i++;
         j--;
     }
