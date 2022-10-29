@@ -25,24 +25,33 @@ int main(){
         for(int i=0;i<cont;i++){
             vetorAux[i] = vetorPrin[i];
         }
+
         retornoShell = shell(vetorAux,cont);
-        retornoquick = quick(vetorAux,0,cont-1);
-        printf("Shell eh: %d e quick: comp: %d cp: %d e ret: %d\n",retornoShell,compsQ,cpysQ,retornoquick);
+        for(int i=0;i<cont;i++){
+            vetorAux[i] = vetorPrin[i];
+        }
+
+        quick(vetorAux,0,cont-1);
+
+        retornoquick = compsQ+ cpysQ;
+
+        
         cont++;
 
         if (retornoShell > retornoquick)
-            printf("Q\n"); 
+            printf("Q "); 
         if (retornoShell < retornoquick)
-            printf("S\n"); 
+            printf("S "); 
         if (retornoShell == retornoquick)
-            printf("-\n"); 
+            printf("- "); 
     }
+    printf("\n");
     return 0;
 }
 
 int shell(int v[], int n) {
     int comp=0,cpy=0;
-    int gap = pow(2,n-1);
+    int gap = 1;
 
     while(gap <= n) {
         gap *= 2;
@@ -63,7 +72,7 @@ int shell(int v[], int n) {
                 cpy=cpy+1;
                 j -= gap;
             }
-            if(j>=0 && v[j]<=x){
+            if(j>=0){
                 comp=comp+1;
             }
 
@@ -78,14 +87,18 @@ int shell(int v[], int n) {
     }
     printf("\n");
     */
-    return (comp+cpy);
+    int resultado = comp+cpy;
+    return resultado;
 }
 
 
 
 int quick(int v[], int f, int l) {
+
+   
+
     if (f >= l) {
-        return (compsQ+cpysQ);
+        return 0;
     }
     int m = (l + f)/2;
 
