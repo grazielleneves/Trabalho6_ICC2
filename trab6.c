@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 int shell(int v[], int n) ;
-void quick(int v[], int f, int l) ;
+int quick(int v[], int f, int l) ;
 
 int main(){
     int tamanho;
@@ -15,7 +15,7 @@ int main(){
 
     int vetorAux[tamanho];
     int cont=1;
-    int retornoShell=0;
+    int retornoShell=0,retornoquick=0;
     while(cont <= tamanho){
         //printf("cont eh: %d\n",cont);
         printf("Aux: ");
@@ -26,7 +26,8 @@ int main(){
         printf("\n");
         // 1
         retornoShell = shell(vetorAux,cont);
-        printf("Shell eh: %d\n",retornoShell);
+        retornoquick = quick(vetorAux,0,cont);
+        printf("Shell eh: %d e quick: %d\n",retornoShell,retornoquick);
         cont++;
     }
     return 0;
@@ -59,37 +60,52 @@ int shell(int v[], int n) {
         }
         gap /= 2;
     }
-    for(int aj=0;aj<n;aj++){
+    /*for(int aj=0;aj<n;aj++){
         printf("%d ",v[aj]);
     }
     printf("\n");
+    */
     return (comp+cpy);
 }
 
-void quick(int v[], int f, int l) {
-        if (f >= l) {
-            return;
-        }
-        int m = (l + f)/2;
-        int pivot = v[m];
-        int i = f;
-        int j = l;
-        while(1) {
-            while(v[i] < pivot) {
-                i++;
-            }
-            while(v[j] > pivot) {
-                j--;
-            }
-            if (i >= j) {
-                break;
-            }
-            int aux = v[i];
-            v[i] = v[j];
-            v[j] = aux;
+int compsQ=0,cpysQ=0;
+
+int quick(int v[], int f, int l) {
+    if (f >= l) {
+        return compsQ+cpysQ;
+    }
+    int m = (l + f)/2;
+    int pivot = v[m];
+    cpysQ=cpysQ+1;
+    int i = f;
+    int j = l;
+    while(1) {
+        while(v[i] < pivot) {   
+            compsQ=compsQ+1;
             i++;
+        }
+        compsQ=compsQ+1;
+
+        while(v[j] > pivot) {
+            compsQ=compsQ+1;
             j--;
         }
-        quick(v, f, j);
-        quick(v, j+1, l);
+        compsQ=compsQ+1;
+
+        if (i >= j) {
+            break;
+        }
+        cpysQ=cpysQ+1;
+        int aux = v[i];
+        cpysQ=cpysQ+1;
+
+        v[i] = v[j];
+        cpysQ=cpysQ+1;
+
+        v[j] = aux;
+        i++;
+        j--;
+    }
+    quick(v, f, j);
+    quick(v, j+1, l);
 }
