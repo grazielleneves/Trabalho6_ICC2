@@ -138,4 +138,7 @@ int quick(int v[], int f, int l) {
     }
     quick(v, f, j);
     quick(v, j+1, l);
+    
+    int resultado = compsQ+cpysQ;
+    return resultado;
 }
